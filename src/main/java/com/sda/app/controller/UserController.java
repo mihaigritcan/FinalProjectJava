@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/users") //adresa unde gasim metodele pentru user
 
 public class UserController {
@@ -34,11 +35,11 @@ public class UserController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<ApiResponse> createUser(User user) {
+    public ResponseEntity<ApiResponse> createUser(@RequestBody User user) {
         userService.createUser(user);
         ApiResponse response = new ApiResponse.Builder()
                 .status(200)
-                .message("User successfully updated")
+                .message("User successfully created")
                 .data(userService.createUser(user))
                 .build();
         return ResponseEntity.ok(response);
@@ -68,5 +69,27 @@ public class UserController {
         return ResponseEntity.ok(response);
 
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse> loginUser(@RequestBody User user)
+    {
+        ApiResponse response = new ApiResponse.Builder()
+                .status(200)
+                .message("User successfully logged in")
+                .data(null)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+    @PostMapping("/register")
+    public ResponseEntity<ApiResponse> registerUser(@RequestBody User user){
+       /* return createUser(user);*/
+        ApiResponse response = new ApiResponse.Builder()
+                .status(200)
+                .message("User successfully registered")
+                .data(this.userService.createUser(user))
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
 }
 
