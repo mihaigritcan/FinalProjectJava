@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -82,6 +83,25 @@ public class ItemController {
                 .message("Item successfully deleted")
                 .data(null)
                 .build();
+        return ResponseEntity.ok(response);
+    }
+    @GetMapping("/seach")
+    public ResponseEntity<ApiResponse> searchItem(@RequestParam String word){
+        Optional<Item> item=itemService.searchItem(word);
+        ApiResponse response;
+        if(item.isPresent()){
+
+          response=new ApiResponse.Builder()
+                    .status(200)
+                    .message("Item found")
+                    .data(item.get())
+                    .build();
+        }else{
+            response=new ApiResponse.Builder()
+                .status(200)
+                .message("Item not found")
+                .data(null)
+                .build();};
         return ResponseEntity.ok(response);
     }
 }
